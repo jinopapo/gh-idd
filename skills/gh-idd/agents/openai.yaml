@@ -1,0 +1,4 @@
+interface:
+  display_name: "gh idd"
+  short_description: "GitHub Issue駆動ワークフローをgh iddで操作"
+  default_prompt: "$gh-idd を使って、このリポジトリの現在のIssue状況を確認し、次に取るべき操作を進めてください。"

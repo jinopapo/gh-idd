@@ -1,0 +1,22 @@
+{
+  "name": "gh-idd",
+  "version": "0.1.0",
+  "description": "Issue-driven development workflow for GitHub CLI",
+  "type": "module",
+  "bin": {
+    "gh-idd": "./gh-idd"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "test": "npm run build && node --test",
+    "lint": "tsc -p tsconfig.json --noEmit"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^26.6.2",
+    "typescript": "^7.0.2"
+  }
+}

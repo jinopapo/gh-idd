@@ -28,6 +28,7 @@ command it invokes, together with its purpose.
 | `pr` | Push the current branch and create a closing pull request |
 | `issue` | Show only the Issue linked to the current branch |
 | `status` | Show Issue, dependency, branch, Project, and PR context |
+| `completion fish` | Generate fish shell completions |
 
 ## Requirements
 
@@ -50,6 +51,23 @@ For development from this checkout:
 ```bash
 gh extension install .
 ```
+
+### fish completions
+
+Run these commands in fish after installing the extension:
+
+```fish
+mkdir -p ~/.config/fish/conf.d
+gh idd completion fish > ~/.config/fish/conf.d/gh-idd.fish
+source ~/.config/fish/conf.d/gh-idd.fish
+```
+
+This enables command names, options, and help targets for both `gh idd` and
+`gh-idd`. Regenerate the file after upgrading the extension. If you explicitly
+load `gh completion --shell fish` in your fish configuration, source the
+`gh-idd.fish` file after it, because gh's script clears existing completions.
+Completion generation works outside a Git repository and requires no GitHub
+API access. Issue numbers and Project references are entered manually.
 
 ### Codex Skill
 

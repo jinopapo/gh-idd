@@ -21,7 +21,7 @@ Run 'gh idd help <command>' to see usage and external command dependencies.
 ${OPTIONS}`;
 }
 export function renderCommandHelp(command) {
-    const dependencies = [...RUNTIME_DEPENDENCIES, ...command.dependencies]
+    const dependencies = [...("executeStandalone" in command ? [] : RUNTIME_DEPENDENCIES), ...command.dependencies]
         .map((dependency) => `  ${dependency.command}\n      ${dependency.purpose}`)
         .join("\n");
     return `${command.summary}
@@ -30,7 +30,7 @@ Usage:
   ${command.usage}
 
 External command dependencies:
-${dependencies}
+${dependencies || "  None"}
 
 ${OPTIONS}`;
 }

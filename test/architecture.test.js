@@ -4,11 +4,11 @@ import { COMMANDS } from "../dist/commands/registry.js";
 import { renderCommandHelp, renderHelp } from "../dist/help.js";
 
 test("the command registry is the complete discoverable command catalog", () => {
-  assert.deepEqual(COMMANDS.map((command) => command.name), ["set-project", "start", "next-issue", "close", "pr", "issue", "status"]);
+  assert.deepEqual(COMMANDS.map((command) => command.name), ["set-project", "start", "next-issue", "close", "pr", "issue", "status", "completion"]);
   for (const command of COMMANDS) {
     assert.ok(command.usage.startsWith(`gh idd ${command.name}`));
     assert.ok(command.summary.length > 0);
-    assert.ok(command.dependencies.length > 0);
+    assert.ok(command.dependencies.length > 0 || "executeStandalone" in command);
   }
 });
 

@@ -7,6 +7,8 @@ import { statusCommand } from "./status.js";
 import { closeCommand } from "./close.js";
 import { issueCommand } from "./issue.js";
 
+import { completionCommand } from "./completion.js";
+
 // コマンド追加時の唯一の登録ポイント。helpと実行dispatchはこの一覧から生成される。
 export const COMMANDS: readonly CommandDefinition[] = [
   setProjectCommand,
@@ -16,6 +18,7 @@ export const COMMANDS: readonly CommandDefinition[] = [
   prCommand,
   issueCommand,
   statusCommand,
+  completionCommand,
 ];
 
 export function findCommand(name: string | undefined): CommandDefinition | undefined {

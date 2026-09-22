@@ -26,10 +26,15 @@ export interface CommandContext {
     github: GitHubAdapter;
     git: GitAdapter;
 }
-export interface CommandDefinition {
+interface CommandMetadata {
     name: string;
     usage: string;
     summary: string;
     dependencies: ExternalCommandDependency[];
-    execute(context: CommandContext): Promise<void>;
 }
+export type CommandDefinition = CommandMetadata & ({
+    execute(context: CommandContext): Promise<void>;
+} | {
+    executeStandalone(args: ParsedArguments): Promise<void>;
+});
+export {};

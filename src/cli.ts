@@ -24,6 +24,8 @@ export async function run(argv: string[], dependencies: { runner?: CommandRunner
   const command = findCommand(args.command);
   if (!command) throw new UserError(`Unknown command: ${args.command}\n\n${renderHelp(COMMANDS)}`);
 
+  if ("executeStandalone" in command) { await command.executeStandalone(args); return; }
+
   const runner = dependencies.runner || new ProcessCommandRunner();
   const git = new GitAdapter(runner);
   const repoRoot = git.repositoryRoot();

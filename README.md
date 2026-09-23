@@ -22,6 +22,7 @@ command it invokes, together with its purpose.
 | Command | Purpose |
 | --- | --- |
 | `set-project` | Select the only GitHub Project that `gh idd` may update |
+| `create-task` | Create an Issue in a chosen repository and add it to the configured Project as Backlog by default |
 | `start` | Check dependencies and start development for an Issue |
 | `next-issue` | Find a newly unblocked downstream Issue and start it |
 | `close` | Close the current branch's Issue and start a newly unblocked downstream Issue |
@@ -98,6 +99,20 @@ gh idd set-project
 gh idd set-project example-org/3
 ```
 
+Create a task in this repository or another repository that shares the
+configured Project:
+
+```bash
+gh idd create-task "Add search filters" --body "Allow filtering by status"
+gh idd create-task "Fix login redirect" --body-file task.md --repo example-org/web
+```
+
+The Project comes from the current checkout's `.github/idd.toml` (or global
+configuration). `--repo` selects only the Issue's repository. `create-task`
+checks Project access before creating the Issue and sets its Project status to
+the configured `project.status.todo` value, which defaults to `Backlog`. If Project addition fails after
+Issue creation, the command reports the new Issue URL for recovery.
+
 Start an unblocked Issue. This creates and checks out a linked development
 branch, assigns the Issue to you, and changes the configured Project status to
 `In Progress`:
@@ -158,7 +173,7 @@ number = 3
 status_field = "Status"
 
 [project.status]
-todo = "Todo"
+todo = "Backlog"
 progress = "In Progress"
 review = "In Review"
 

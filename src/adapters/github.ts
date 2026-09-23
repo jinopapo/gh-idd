@@ -73,21 +73,37 @@ export class GitHubAdapter {
 
   currentLogin(): string { return this.runner.run("gh", ["api", "user", "--jq", ".login"]); }
   assign(issue: Issue): void { this.runner.run("gh", ["issue", "edit", String(issue.number), "--repo", this.repo, "--add-assignee", "@me"]); }
+  createIssue(title: string, body?: string, bodyFile?: string): string {
+    const args = ["issue", "create", "--repo", this.repo, "--title", title];
+    if (bodyFile) args.push("--body-file", bodyFile);
+    else args.push("--body", body || "");
+    const output = this.runner.run("gh", args);
+    const url = output.split(/\s/).find((part) => /^https?:\/\/[^\s]+\/issues\/\d+$/.test(part));
+    if (!url) throw new UserError(`gh issue create did not return an Issue URL: ${output}`);
+    return url;
+  }
   closeIssue(issue: Issue): void { this.runner.run("gh", ["issue", "close", String(issue.number), "--repo", this.repo]); }
   createDevelopmentBranch(issue: Issue, name: string): void {
     this.runner.run("gh", ["issue", "develop", String(issue.number), "--repo", this.repo, "--name", name, "--checkout"], { inherit: true });
   }
 
-  updateProject(issue: Issue, project: ProjectConfig, status: string): void {
-    const base = [String(project.number), "--owner", project.owner, "--url", issue.url];
+  updateProject(issue: Pick<Issue, "url">, project: ProjectConfig, status: string): void {
     try {
-      this.runner.run("gh", ["project", "item-edit", ...base, "--field", project.status_field || "Status", "--value", status]);
+      this.setProjectStatus(issue.url, project, status);
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);
       if (!/item|not found|could not resolve/i.test(message)) throw error;
-      this.runner.run("gh", ["project", "item-add", String(project.number), "--owner", project.owner, "--url", issue.url]);
-      this.runner.run("gh", ["project", "item-edit", ...base, "--field", project.status_field || "Status", "--value", status]);
+      this.addProjectItem(issue.url, project);
+      this.setProjectStatus(issue.url, project, status);
     }
+  }
+
+  addProjectItem(url: string, project: ProjectConfig): void {
+    this.runner.run("gh", ["project", "item-add", String(project.number), "--owner", project.owner, "--url", url]);
+  }
+
+  setProjectStatus(url: string, project: ProjectConfig, status: string): void {
+    this.runner.run("gh", ["project", "item-edit", String(project.number), "--owner", project.owner, "--url", url, "--field", project.status_field || "Status", "--value", status]);
   }
 
   projectItem(issue: Issue, project: ProjectConfig): ProjectItem | null {

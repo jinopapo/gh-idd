@@ -6,7 +6,7 @@ export const DEFAULT_CONFIG = {
     branch: { format: "{type}/{issue}-{slug}" },
     pull_request: { title: "{issue_title}", body: "" },
     codex: {},
-    project: { status: { todo: "Todo", progress: "In Progress", review: "In Review" } },
+    project: { status: { todo: "Backlog", progress: "In Progress", review: "In Review" } },
     workflow: { assign_on_start: true, update_project: true, check_dependencies: true },
 };
 function stripComment(line) {

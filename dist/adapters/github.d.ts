@@ -12,9 +12,12 @@ export declare class GitHubAdapter {
     issue(number: string | number): Issue;
     currentLogin(): string;
     assign(issue: Issue): void;
+    createIssue(title: string, body?: string, bodyFile?: string): string;
     closeIssue(issue: Issue): void;
     createDevelopmentBranch(issue: Issue, name: string): void;
-    updateProject(issue: Issue, project: ProjectConfig, status: string): void;
+    updateProject(issue: Pick<Issue, "url">, project: ProjectConfig, status: string): void;
+    addProjectItem(url: string, project: ProjectConfig): void;
+    setProjectStatus(url: string, project: ProjectConfig, status: string): void;
     projectItem(issue: Issue, project: ProjectConfig): ProjectItem | null;
     issueForBranch(branch: string): Issue;
     private findIssueByLinkedBranch;

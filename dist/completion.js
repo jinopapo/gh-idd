@@ -25,7 +25,7 @@ export function renderFishCompletion(commands) {
             continue
         end
         switch $word
-            case -R --repo --branch-format
+            case -R --repo -t --title -b --body -F --body-file --branch-format
                 set skip 1
             case '-*'
             case '*'
@@ -55,6 +55,9 @@ end`,
         lines.push(`${prefix} -f -n '__gh_idd_context completion' -a fish -d 'Generate fish completions'`);
         for (const [flags, description] of [
             ["-s R -l repo -x", "Select another repository (OWNER/REPO)"],
+            ["-s t -l title -x", "Title for create-task"],
+            ["-s b -l body -x", "Body for create-task"],
+            ["-s F -l body-file -r", "Read create-task body from a file"],
             ["-l branch-format -x", "Override the branch naming format"],
             ["-l no-assign", "Do not assign the Issue on start"],
             ["-l no-project", "Do not update the configured Project"],

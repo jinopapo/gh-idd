@@ -1,6 +1,9 @@
 import { RUNTIME_DEPENDENCIES } from "./core/runtime-dependencies.js";
 const OPTIONS = `Options:
   -R, --repo OWNER/REPO       Select another repository
+  -t, --title TEXT            Title for create-task
+  -b, --body TEXT             Body for create-task
+  -F, --body-file FILE        Read create-task body from a file
       --branch-format FORMAT  Override the branch naming format
       --no-assign             Do not assign the Issue on start
       --no-project            Do not update the configured Project

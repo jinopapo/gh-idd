@@ -60,6 +60,12 @@ export function parseArguments(argv) {
             result.noDependencyCheck = true;
         else if (arg === "-R" || arg === "--repo")
             result.repo = requiredValue(argv, ++i, arg);
+        else if (arg === "-t" || arg === "--title")
+            result.title = requiredValue(argv, ++i, arg);
+        else if (arg === "-b" || arg === "--body")
+            result.body = requiredValue(argv, ++i, arg);
+        else if (arg === "-F" || arg === "--body-file")
+            result.bodyFile = requiredValue(argv, ++i, arg);
         else if (arg === "--branch-format")
             result.branchFormat = requiredValue(argv, ++i, arg);
         else if (arg.startsWith("-"))

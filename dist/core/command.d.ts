@@ -17,6 +17,9 @@ export interface ParsedArguments {
     noDependencyCheck: boolean;
     repo?: string;
     branchFormat?: string;
+    title?: string;
+    body?: string;
+    bodyFile?: string;
 }
 export interface CommandContext {
     args: ParsedArguments;

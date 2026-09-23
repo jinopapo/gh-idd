@@ -1,12 +1,20 @@
 ---
 name: gh-idd
-description: Use the gh idd GitHub CLI extension to inspect and run an Issue-driven development workflow that connects GitHub Issues, dependencies, branches, pull requests, and one configured GitHub Project. Apply when the user asks to start, inspect, advance, close, or create a PR for work managed by gh idd; do not use for repositories that do not use this extension.
+description: Use gh idd by default for implementation, bug fixes, refactors, and other code changes in GitHub repositories. Inspect the current branch's linked Issue and follow the Issue-driven workflow even when the user does not mention gh idd. Also handle explicit Issue, dependency, branch, Project, and pull request requests. Skip non-GitHub repositories or an explicit request for another workflow.
 license: MIT
 ---
 
 # gh idd
 
-Operate `gh idd` from the target Git repository. GitHub is the source of truth; do not maintain a parallel issue state.
+Operate `gh idd` from the target GitHub repository. GitHub is the source of truth; do not maintain a parallel issue state. Apply this workflow to ordinary coding requests, including a bare "implement this" or "fix this", without waiting for the user to name `gh idd`.
+
+## Default for code changes
+
+1. Check the checkout, current branch, and worktree status so the task uses the intended repository and preserves unrelated changes.
+2. Run `gh idd issue` before editing to identify the Issue linked to the current branch. If one is linked and dependency, Project, or PR context matters, run `gh idd status` as well. Both commands only read GitHub state.
+3. Read the linked Issue's body with `gh issue view <number>` when the request is terse or the requirements are in the Issue. Use the user's current instructions to resolve any difference in scope.
+4. If the branch has no linked Issue, continue the requested implementation on that branch. Do not create an Issue or start another branch just because the link is missing. If lookup fails for another reason, report the failure and continue when the user's request provides enough context.
+5. Use `gh idd` for requested Issue, branch, Project, and PR transitions throughout the work. A coding request alone does not call for pushing a branch, opening a PR, or closing an Issue.
 
 ## Choose the narrowest command
 
@@ -23,11 +31,10 @@ Use `gh idd help <command>` when exact behavior or external commands need confir
 
 ## Run the workflow
 
-1. Confirm the working directory, current branch, and worktree status. Preserve unrelated local changes.
-2. Inspect with `gh idd issue` or `gh idd status` before choosing a mutating command, unless the user's request already identifies the Issue and action unambiguously.
-3. Run only the command needed for the requested transition. Treat `create-task`, `start`, `next-issue`, `close`, `pr`, and `set-project` as state-changing operations.
-4. Do not add `--force` merely to bypass a blocker. Use it only when the user has explicitly chosen to proceed despite open dependencies.
-5. After a state change, report the Issue number, checked-out branch, Project transition, and PR URL when applicable. Re-run `gh idd status` when verification is useful and does not duplicate a successful command result.
+1. Inspect with `gh idd issue` or `gh idd status` before choosing a mutating command, unless the user's request already identifies the Issue and action unambiguously.
+2. Run only the command needed for the requested transition. Treat `create-task`, `start`, `next-issue`, `close`, `pr`, and `set-project` as state-changing operations.
+3. Do not add `--force` merely to bypass a blocker. Use it only when the user has explicitly chosen to proceed despite open dependencies.
+4. After a state change, report the Issue number, checked-out branch, Project transition, and PR URL when applicable. Re-run `gh idd status` when verification is useful and does not duplicate a successful command result.
 
 Useful scoped overrides are `--no-assign`, `--no-project`, `--no-dependency-check`, and `--branch-format`. Preserve repository configuration unless the user asks to override it.
 

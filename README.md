@@ -87,7 +87,12 @@ gh skill install . gh-idd --from-local --agent codex --scope user
 
 The `gh skill` commands are currently a GitHub CLI preview feature. They track
 the Skill's source so it can later be refreshed with `gh skill update`. Start a
-new Codex session after installation, then invoke the Skill with `$gh-idd`.
+new Codex session after installation. For implementation work in a GitHub
+repository, Codex can select the Skill automatically, inspect the Issue linked
+to the current branch with `gh idd`, and follow the Issue-driven workflow even
+when the request does not mention the extension. If no Issue is linked, it
+continues on the current branch without creating one. You can also invoke it
+explicitly with `$gh-idd`.
 
 ## Quick start
 
